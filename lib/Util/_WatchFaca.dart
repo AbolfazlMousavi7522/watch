@@ -11,21 +11,24 @@ class WatchFace extends StatefulWidget {
 
 bool timerOn = false;
 int bigAgTimeLeft = 0;
-
+double data1 = 0;
+double data = 0;
 class _WatchFaceState extends State<WatchFace> {
   @override
   void dispose() {}
 
-  void timerStart(int bigAgTimeLeft) {
+  void timerStart(int bigAgTimeInput) {
     var mainTimer = Timer.periodic(Duration(seconds: 1), (timer) {
-      if (bigAgTimeLeft < 20) {
-        timerOn == true;
+      if (bigAgTimeInput > 0 ) {
         setState(() {
-          bigAgTimeLeft--;
+          bigAgTimeInput--;
+          bigAgTimeLeft = bigAgTimeInput;
           print(bigAgTimeLeft);
         });
       } else {
         timer.cancel();
+        timerOn =false;
+        print(timerOn);
       }
     });
   }
@@ -40,16 +43,16 @@ class _WatchFaceState extends State<WatchFace> {
           children: [
             GestureDetector(
               onVerticalDragUpdate: (details) {
-                print(details.localPosition.dy);
+                data1 == details.primaryDelta ;
+                data + data1;
+                print(data1);
               },
               onTap: () {
                 if (timerOn == false) {
-                  timerStart();
+                  timerStart(20);
                   timerOn = true;
-                } else {
-                  bigAgTimeLeft = 0;
-                  timerOn = false;
-                }
+                print(timerOn);
+                } 
               },
               child: Padding(
                 padding: const EdgeInsets.all(40),
@@ -70,7 +73,9 @@ class _WatchFaceState extends State<WatchFace> {
               padding: const EdgeInsets.all(100),
               child: Image.asset("images/ag_smal.png"),
             ),
+          Text(data.toString())
           ],
+          
         ));
   }
 }
